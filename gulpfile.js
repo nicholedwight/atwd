@@ -17,7 +17,7 @@ gulp.task('watch', ['images', 'styles', 'scripts'], function() {
 });
 
 gulp.task('styles', function(cb) {
-  return gulp.src('./assets/scss')
+  return gulp.src('./assets/css')
     .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest('./dist/assets/css'))
     .pipe(browserSync.stream());
