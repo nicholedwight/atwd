@@ -1,9 +1,0 @@
-<currencies>
-  <currency code="GBP" rate="1" timestamp="">
-    <name>Pound Sterling</name>
-    <locations>
-      <location>England</location>
-      <location>ETC</location>
-    </locations>
-  </currency>
-</currencies>

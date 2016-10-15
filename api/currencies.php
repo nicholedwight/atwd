@@ -1,25 +1,32 @@
 <?php
 
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 $API_KEY = "18947b8fdda74706b676b4ab92faa09d";
-$exchange_rate_url = 'https://openexchangerates.org/api/latest.json?app_id=' . $API_KEY;
-$json = file_get_contents($exchange_rate_url);
-$json_array = json_decode($json, JSON_PRETTY_PRINT);
+$exchange_rate_url = 'https://openexchangerates.org/api/latest.json?app_id=';
 
+$json_data = file_get_contents($exchange_rate_url  . $API_KEY);
+$data = json_decode($json_data, true);
+$rates = array_slice($data, 4);
+$xml = new SimpleXMLElement('<currencies/>');
 
-// $test_array = array (
-//   'bla' => 'blub',
-//   'foo' => 'bar',
-//   'another_array' => array (
-//     'stack' => 'overflow',
-//   ),
-// );
-//
-// $xml = new SimpleXMLElement('<currencies/>');
-// array_walk_recursive($json_array, array ($xml, 'addChild'));
-// print $xml->asXML();
-
-// echo "<pre>$json</pre>";
 
 echo "<pre>";
-var_dump($json_array);
+var_dump($rates);
 echo "</pre>";
+
+foreach($rates as $keys => $values) {
+  foreach($values as $key => $value) {
+    $currency = $xml->addChild('currency');
+    $currency->addAttribute('rate', $value);
+    $currency->addAttribute('code', $key);
+    $currency->addChild('name');
+    $currency->addChild('locations');
+  }
+}
+
+// Header('Content-type: text/xml');
+$xml->asXML("../data/currencies.xml");
