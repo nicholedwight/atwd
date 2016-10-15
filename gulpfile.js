@@ -23,9 +23,6 @@ gulp.task('styles', function(cb) {
     .pipe(browserSync.stream());
 });
 
-// This one's got a bit of a weird approach, but it works
-// heavily inspired / lifted from:
-// https://fettblog.eu/gulp-browserify-multiple-bundles/
 gulp.task('scripts', function(cb) {
   return gulp.src('./assets/js/main.js')
   .pipe(gulp.dest('./dist/assets/js'))
