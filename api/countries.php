@@ -10,6 +10,7 @@ $request = file_get_contents($endpoint);
 
 $responseArray = json_decode($request, true);
 
+var_dump($responseArray[0]["name"]);
 $countries = array();
 
 for ($i = 0; $i < count($responseArray); $i++ ) {
