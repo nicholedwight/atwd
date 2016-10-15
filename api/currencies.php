@@ -17,6 +17,7 @@ var_dump($rates);
 echo "</pre>";
 
 function getLocation($code) {
+  global $result;
 
   $country_by_currency_url = 'https://restcountries.eu/rest/v1/currency/';
   $endpoint = $country_by_currency_url . $code;
@@ -30,19 +31,20 @@ function getLocation($code) {
       array_push($countries, $responseArray[$i]["name"]);
   }
 
-  var_dump($countries);
+  $result = implode(", ", $countries);
+
+  return $result;
 }
 
-getLocation("GBP");
 
 foreach($rates as $keys => $values) {
   foreach($values as $key => $value) {
+    getLocation($key);
     $currency = $xml->addChild('currency');
     $currency->addAttribute('rate', $value);
     $currency->addAttribute('code', $key);
     $currency->addChild('name');
-    // echo getLocation($key);
-    $currency->addChild('locations');
+    $currency->addChild('locations', $result);
   }
 }
 
