@@ -1,22 +1,20 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+function getLocations($code) {
+  global $result;
 
-$country_by_currency_url = 'https://restcountries.eu/rest/v1/currency/';
-$currency = 'USD';
-$endpoint = $country_by_currency_url . $currency;
-$request = file_get_contents($endpoint);
+  $country_by_currency_url = 'https://restcountries.eu/rest/v1/currency/';
+  $endpoint = $country_by_currency_url . $code;
+  $request = file_get_contents($endpoint);
 
-$responseArray = json_decode($request, true);
+  $responseArray = json_decode($request, true);
 
-var_dump($responseArray[0]["name"]);
-$countries = array();
+  $countries = array();
 
-for ($i = 0; $i < count($responseArray); $i++ ) {
-    array_push($countries, $responseArray[$i]["name"]);
+  for ($i = 0; $i < count($responseArray); $i++ ) {
+      array_push($countries, $responseArray[$i]["name"]);
+  }
+
+  $result = implode(", ", $countries);
+
+  return $result;
 }
-
-echo '<pre>';
-var_dump($countries);
-echo '</pre>';
