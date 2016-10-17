@@ -15,7 +15,6 @@ function getLocations($code) {
   }
 
   $result = $countries;
-  // $result = implode(", ", $countries);
 
   return $result;
 }
