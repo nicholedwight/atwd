@@ -14,7 +14,8 @@ function getLocations($code) {
       array_push($countries, $responseArray[$i]["name"]);
   }
 
-  $result = implode(", ", $countries);
+  $result = $countries;
+  // $result = implode(", ", $countries);
 
   return $result;
 }
@@ -31,9 +32,9 @@ function getCurrencies() {
   $xml = new SimpleXMLElement('<currencies/>');
 
 
-  // echo "<pre>";
-  // var_dump($rates);
-  // echo "</pre>";
+  echo "<pre>";
+  var_dump($result);
+  echo "</pre>";
 
   foreach($rates as $keys => $values) {
     foreach($values as $key => $value) {
@@ -42,7 +43,10 @@ function getCurrencies() {
       $currency->addAttribute('rate', $value);
       $currency->addAttribute('code', $key);
       $currency->addChild('name');
-      $currency->addChild('locations', $result);
+      $locations = $currency->addChild('locations');
+      foreach($result as $location) {
+        $locations->addChild('location', $location);
+      }
     }
   }
 
