@@ -19,8 +19,35 @@ function getLocations($code) {
   return $result;
 }
 
+function getCurrencyNames() {
+  global $currencyNames;
+
+  $exchange_rate_url = 'https://openexchangerates.org/api/currencies.json';
+
+  $json_data = file_get_contents($exchange_rate_url);
+  $namesArray = json_decode($json_data, true);
+
+  // echo "<pre>";
+  // var_dump($responseArray);
+  // echo "</pre>";
+  // $namesArray = array();
+  //
+  // foreach($responseArray as $keys => $values) {
+  //     array_push($namesArray, $values);
+  // }
+
+  // echo "<pre>";
+  // var_dump($namesArray);
+  // echo "</pre>";
+  $currencyNames = $namesArray;
+
+  return $currencyNames;
+
+}
+
 function getCurrencies() {
   global $result;
+  global $currencyNames;
 
   $API_KEY = "18947b8fdda74706b676b4ab92faa09d";
   $exchange_rate_url = 'https://openexchangerates.org/api/latest.json?app_id=';
@@ -31,21 +58,27 @@ function getCurrencies() {
   $xml = new SimpleXMLElement('<currencies/>');
 
 
-  echo "<pre>";
-  var_dump($result);
-  echo "</pre>";
+  // echo "<pre>";
+  // var_dump($result);
+  // echo "</pre>";
 
   foreach($rates as $keys => $values) {
     foreach($values as $key => $value) {
       getLocations($key);
+      getCurrencyNames();
       $currency = $xml->addChild('currency');
       $currency->addAttribute('rate', $value);
       $currency->addAttribute('code', $key);
-      $currency->addChild('name');
+      foreach($currencyNames as $keyName => $valueName) {
+        if($keyName == $key) {
+          $currency->addChild('name', $valueName);
+        }
+      }
       $locations = $currency->addChild('locations');
       foreach($result as $location) {
         $locations->addChild('location', $location);
       }
+
     }
   }
 
