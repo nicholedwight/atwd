@@ -33,3 +33,11 @@ if (!empty($_GET['from'])) {
 } else {
 
 }
+?>
+
+<!DOCTYPE html>
+<html>
+  <body>
+
+  </body>
+</html>
