@@ -58,10 +58,6 @@ function getCurrencies() {
   $xml = new SimpleXMLElement('<currencies/>');
 
 
-  // echo "<pre>";
-  // var_dump($result);
-  // echo "</pre>";
-
   foreach($rates as $keys => $values) {
     foreach($values as $key => $value) {
       getLocations($key);
