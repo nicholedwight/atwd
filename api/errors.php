@@ -1,5 +1,6 @@
 <?php
-$missingParameter=<<<XML
+$missingParameter = <<<XML
+<?xml version='1.0' standalone='yes'?>
   <conv>
     <error>
       <code>1100</code>
@@ -8,7 +9,8 @@ $missingParameter=<<<XML
   </conv>
 XML;
 
-$currencyNotRecognised=<<<XML
+$currencyNotRecognised = <<<XML
+<?xml version='1.0' standalone='yes'?>
   <conv>
     <error>
       <code>1000</code>
@@ -17,7 +19,8 @@ $currencyNotRecognised=<<<XML
   </conv>
 XML;
 
-$parameterNotRecognised=<<<XML
+$parameterNotRecognised = <<<XML
+<?xml version='1.0' standalone='yes'?>
   <conv>
     <error>
       <code>1200</code>
@@ -26,7 +29,8 @@ $parameterNotRecognised=<<<XML
   </conv>
 XML;
 
-$invalidAmount=<<<XML
+$invalidAmount = <<<XML
+<?xml version='1.0' standalone='yes'?>
   <conv>
     <error>
       <code>1300</code>
@@ -35,7 +39,8 @@ $invalidAmount=<<<XML
   </conv>
 XML;
 
-$error=<<<XML
+$error = <<<XML
+<?xml version='1.0' standalone='yes'?>
   <conv>
     <error>
       <code>1400</code>

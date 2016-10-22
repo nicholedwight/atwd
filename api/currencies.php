@@ -81,3 +81,16 @@ function getCurrencies() {
   // Header('Content-type: text/xml');
   $xml->asXML("./data/currencies.xml");
 }
+
+function getCurrencyCodes() {
+  global $codesArray;
+
+  $xml = simplexml_load_file('./data/currencies.xml');
+  $codesArray = array();
+
+  foreach($xml->currency as $currency) {
+    array_push($codesArray, $currency['code']);
+  }
+  
+  return $codesArray;
+}
