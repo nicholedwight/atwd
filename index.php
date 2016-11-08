@@ -1,12 +1,10 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
-include('api/currencies.php');
-require('api/errors.php');
-getCurrencyCodes();
-// getCurrencies();
+require('api/config.php');
+// require('api/errors.php');
+getCurrencies();
+
+
 
 ?>
 <!DOCTYPE html>
