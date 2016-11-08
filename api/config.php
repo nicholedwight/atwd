@@ -33,8 +33,6 @@ function getCurrencies() {
       foreach ($currencyCodes as $currencyCode) {
           $code = substr($key, -3);
           if ($code == $currencyCode) {
-              echo $code . ' : ' . $value . ' timestamp: ' . $timestamp . '<br />';
-
               $writer->startElement("rate");
               $writer->writeAttribute('code', $code);
               $writer->writeAttribute('value', $value);
