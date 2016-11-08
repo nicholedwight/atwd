@@ -2,7 +2,8 @@
 
 require('api/config.php');
 // require('api/errors.php');
-getCurrencies();
+// getCurrencies();
+getCountries();
 
 
 
