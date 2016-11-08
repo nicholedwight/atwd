@@ -77,9 +77,9 @@ function getCountries() {
       if ($currencies == $ccode) {
         foreach ($countryNames as $key => $value) {
           if ($currencies == $key) {
-              if (!isset($currency->cname)) {
-                $currency->addChild('cname', $value);
-              }
+            if (!isset($currency->cname)) {
+              $currency->addChild('cname', $value);
+            }
           }
         }
         $currency->addChild('country', $countryName);
