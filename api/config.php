@@ -13,9 +13,6 @@ function getCurrencies() {
 
   $apiKey = '6d7de6f2f6410e006fd8850568b2eee2';
 
-  $list = 'list';
-  // currency rates
-  $live = 'live';
 
   $writer = new XMLWriter();
   $writer->openURI('./data/currencies.xml');
@@ -45,6 +42,7 @@ function getCurrencies() {
   $writer->endDocument();
   $writer->flush();
   // $writer->close();
+
 }
 
 function getCountries() {
@@ -54,6 +52,11 @@ function getCountries() {
       "SEK", "SGD", "THB", "TRY", "USD", "ZAR"
   );
 
+  $apiKey = '6d7de6f2f6410e006fd8850568b2eee2';
+  $jsonNames = file_get_contents('http://www.apilayer.net/api/list?access_key='.$apiKey.'&format=1');
+  $objectNames = json_decode($jsonNames, true);
+  $countryNames = $objectNames['currencies'];
+
   $xml = new SimpleXMLElement('<currencies />');
 
   $json = file_get_contents('https://restcountries.eu/rest/v1/all');
@@ -61,26 +64,29 @@ function getCountries() {
   $data = json_decode($json, true);
 
   // Foreach of the 22 currencies
-  foreach ($currencyCodes as $code) {
+  foreach ($currencyCodes as $ccode) {
     // Open root node and one of the 22 child currencies
     $currency = $xml->addChild('currency');
-    $currency->addChild('code', $code);
+    $currency->addChild('ccode', $ccode);
     // foreach country from the json object
     foreach ($data as $country) {
       $countryName = $country['name'];
       // define array of currencies
-      $currencies = $country['currencies'];
-      foreach ($currencies as $datacurrency) {
-        // if one of the currencies from the json object match one of the 22 required currency codes, add the country name
-        if ($datacurrency == $code) {
-          $currency->addChild('country', $countryName);
+      $currencies = implode(', ', $country['currencies']);
+      // if one of the currencies from the json object match one of the 22 required currency codes, add the country name
+      if ($currencies == $ccode) {
+        foreach ($countryNames as $key => $value) {
+          if ($currencies == $key) {
+              if (!isset($currency->cname)) {
+                $currency->addChild('cname', $value);
+              }
+          }
         }
+        $currency->addChild('country', $countryName);
       }
     }
+
   }
-
-
-
 
   $xml->asXML("./data/countries.xml");
 }
