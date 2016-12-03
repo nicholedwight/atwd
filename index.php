@@ -6,19 +6,7 @@ require('config.php');
 // getCountries();
 
 require_once('generate_error.php');
-# currency code array
-# kept in the config file
-$ccodes = array(
-   'CAD','CHF','CNY','DKK',
-   'EUR','GBP','HKD','HUF',
-   'INR','JPY','MXN','MYR',
-   'NOK','NZD','PHP','RUB',
-   'SEK','SGD','THB','TRY',
-   'USD','ZAR');
-# parmeters in URL and format values expected
-# kept in the config file
-$params = array('from', 'to', 'amnt', 'format');
-$frmts = array('xml', 'json');
+
 # turn $_GET params into PHP variables
 extract($_GET);
 # set format to default to XML

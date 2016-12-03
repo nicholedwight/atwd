@@ -31,6 +31,7 @@ $ccodes = array(
 
 # url params
 $params = array('from', 'to', 'amnt', 'format');
+$frmts = array('xml', 'json');
 $frmaction = array('post', 'put', 'delete');
 $frmpost = array('code', 'rate');
 $frmput = array('code', 'name', 'rate', 'countries');
@@ -38,14 +39,27 @@ $frmdelete = array('code');
 
 $update_interval = 43200;
 
+# error_hash to hold error numbers and messages
+$error_hash = array(
+	1000 => 'Currency type not recognized',
+	1100 => 'Required parameter is missing',
+	1200 => 'Parameter not recognized',
+	1300 => 'Currency amount must be a decimal number',
+	1400 => 'Error in service',
+	2000 => 'Method not recognized or is missing',
+	2100 => 'Rate in wrong format or is missing',
+	2200 => 'Currency code in wrong format or is missing',
+	2300 => 'Country name in wrong format or is missing',
+	2400 => 'Currency code not found for update',
+	2500 => 'Error in service'
+);
+
 # determine if local or UWE server
 if (stristr($_SERVER['HTTP_HOST'], 'local')) {
 	$local = TRUE;
 } else {
 	$local = FALSE;
 }
-
-
 
 # determine location of files and the URL of the site:
 # allow for development on different servers.
