@@ -5,60 +5,77 @@ require('config.php');
 // getCurrencies();
 // getCountries();
 
-require_once('generate_error.php');
-
-# turn $_GET params into PHP variables
-extract($_GET);
-# set format to default to XML
-if (!isset($format)) {
-	$format = 'xml';
+// $from = $GET('from');
+// $to   = $_GET('to');
+// $amount = $_GET('amnt');
+//
+// $conversion_rate  = $rates[$from] / $rates[$to];
+// $converted_amount = round ($amount / $conversion_rate, 2);
+function convert($from, $to, $amnt) {
+  echo $from;
 }
-$get = array_intersect($params, array_keys($_GET));
-if (count($get) < 4) {
-	echo generate_error(1100, $error_hash, $format);
-	exit;
-}
-if (count($_GET) > 4) {
-	echo generate_error(1200, $error_hash, $format);
-	exit;
-}
-# $to and $from are not recognized currencies
-if (!in_array($to, $ccodes) || !in_array($from, $ccodes)) {
-	echo generate_error(1000, $error_hash, $format);
-	exit;
-}
-# check for allowed format values
-if (!in_array($format, $frmts)) {
-	echo generate_error(1200, $error_hash, $format);
-	exit;
-}
-# $amnt is not a decimal value
-if (!preg_match('/^[+-]?(\d*\.\d+([eE]?[+-]?\d+)?|\d+[eE][+-]?\d+)$/', $amnt)) {
-	echo generate_error(1300,  $error_hash, $format);
-	exit;
-}
-# now read in data files
-# update rate if more than 12 hours old
-# do conversion
-# echo result as XML or JSON depending on format param.
-
-
 ?>
-<!-- <!DOCTYPE html>
+
+<!DOCTYPE html>
 <html>
 <body>
-  <form action="convert.php" method="GET">
+  <form action="" method="GET">
     <input type='text' name="amnt" />
     <select name="from">
-      <?php foreach($codesArray as $codeName) : ?>
+      <?php foreach($ccodes as $codeName) : ?>
         <option id=""><?php echo $codeName;?> </option>
-      <?php endforeach; ?>
-    </select> to <select name="to">
-      <?php foreach($codesArray as $codeName) : ?>
+      <?php  endforeach; ?>
+    </select>
+    to
+    <select name="to">
+      <?php foreach($ccodes as $codeName) : ?>
         <option id=""><?php echo $codeName;?> </option>
       <?php endforeach; ?>
     </select>
-    <button type="submit" name="submit">Submit</button>
+    <select name="format">
+      <option value="xml">XML</option>
+      <option value="json">JSON</option>
+    </select>
+    <button type="submit">Submit</button>
   </form>
+  <!-- <form method="post" action="convert.php">
+    <div class="InterfaceTitle">
+      <h1 class="heading--primary">Currency API Interface</h1>
+    </div>
+    <div class="InterfaceAction section">
+      <h2 class="heading">Action</h2>
+      <div class="InterfaceAction__input">
+        <input type="radio" value="post" name="InterfaceAction__radio">
+        <label>Post</label>
+      </div>
+      <div class="InterfaceAction__input">
+        <input type="radio" value="put" name="InterfaceAction__radio">
+        <label>Put</label>
+      </div>
+      <div class="InterfaceAction__input">
+        <input type="radio" value="delete" name="InterfaceAction__radio">
+        <label>Delete</label>
+      </div>
+    </div>
+    <div class="CurrencyCode section">
+      <h2 class="heading">Currency Code</h2>
+      <input type="text" class="input__text input__text-sm" value="" placeholder="Code">
+    </div>
+    <div class="CurrencyName section">
+      <h2 class="heading">Currency Name</h2>
+      <input type="text" class="input__text input__text-md" value="" placeholder="Name">
+    </div>
+    <div class="CurrencyRate">
+      <h2 class="heading">Currency Rate ($ = 1)</h2>
+      <input type="text" class="input__text input__text-sm" value="" placeholder="Rate">
+    </div>
+    <div class="Countries section">
+      <h2 class="heading">Countries (comma seperated if 1+)</h2>
+      <input type="text" class="input__text input__text-lg" value="" placeholder="Countries">
+    </div>
+    <div class="Submit section">
+      <input type="submit" class="Submit__btn" value="Submit">
+    </div>
+  </form> -->
 </body>
-</html> -->
+</html>

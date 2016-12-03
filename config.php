@@ -54,6 +54,50 @@ $error_hash = array(
 	2500 => 'Error in service'
 );
 
+require_once('generate_error.php');
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+  # turn $_GET params into PHP variables
+  extract($_GET);
+  # set format to default to XML
+  if (!isset($format)) {
+  	$format = 'xml';
+  }
+  $get = array_intersect($params, array_keys($_GET));
+  if (count($get) < 4 && count($get) >= 1) {
+  	echo generate_error(1100, $error_hash, $format);
+  	exit;
+  }
+  if (count($_GET) > 4) {
+  	echo generate_error(1200, $error_hash, $format);
+  	exit;
+  }
+  # $to and $from are not recognized currencies
+  // if (count($get) == 0) {
+  //   exit;
+  // } else
+  if (!in_array($to, $ccodes) || !in_array($from, $ccodes)) {
+  	echo generate_error(1000, $error_hash, $format);
+  	exit;
+  }
+  # check for allowed format values
+  if (!in_array($format, $frmts)) {
+  	echo generate_error(1200, $error_hash, $format);
+  	exit;
+  }
+  # $amnt is not a decimal value
+  if (!preg_match('/^[+-]?(\d*\.\d+([eE]?[+-]?\d+)?|\d+[eE][+-]?\d+)$/', $amnt)) {
+  	echo generate_error(1300,  $error_hash, $format);
+  	exit;
+  }
+}
+
+
+# now read in data files
+# update rate if more than 12 hours old
+# do conversion
+# echo result as XML or JSON depending on format param.
+
 # determine if local or UWE server
 if (stristr($_SERVER['HTTP_HOST'], 'local')) {
 	$local = TRUE;
