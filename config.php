@@ -1,6 +1,7 @@
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
+ini_set('precision', 3);
 error_reporting(E_ALL);
 #############################################################
 # file: 	config.php                                        #
@@ -73,12 +74,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   	exit;
   }
   # $to and $from are not recognized currencies
-  // if (count($get) == 0) {
-  //   exit;
-  // } else
-  if (!in_array($to, $ccodes) || !in_array($from, $ccodes)) {
-  	echo generate_error(1000, $error_hash, $format);
-  	exit;
+  if (isset($to) || isset($from)){
+    if (!in_array($to, $ccodes) || !in_array($from, $ccodes)) {
+    	echo generate_error(1000, $error_hash, $format);
+    	exit;
+    }
   }
   # check for allowed format values
   if (!in_array($format, $frmts)) {
@@ -86,9 +86,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   	exit;
   }
   # $amnt is not a decimal value
-  if (!preg_match('/^[+-]?(\d*\.\d+([eE]?[+-]?\d+)?|\d+[eE][+-]?\d+)$/', $amnt)) {
-  	echo generate_error(1300,  $error_hash, $format);
-  	exit;
+  if (isset($amnt)) {
+    if (!preg_match('/^[+-]?(\d*\.\d+([eE]?[+-]?\d+)?|\d+[eE][+-]?\d+)$/', $amnt)) {
+    	echo generate_error(1300,  $error_hash, $format);
+    	exit;
+    }
   }
 }
 
