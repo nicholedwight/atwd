@@ -1,9 +1,9 @@
 <?php
 
-require('api/config.php');
+require('config.php');
 // require('api/errors.php');
 // getCurrencies();
-getCountries();
+// getCountries();
 
 
 
