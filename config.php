@@ -57,7 +57,7 @@ $error_hash = array(
 
 require_once('generate_error.php');
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+// if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   # turn $_GET params into PHP variables
   extract($_GET);
   # set format to default to XML
@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     	exit;
     }
   }
-}
+// }
 
 
 # now read in data files

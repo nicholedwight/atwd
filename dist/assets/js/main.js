@@ -28,3 +28,6 @@ if ($('#convert').is(':checked')) {
   $('#deleteform').hide();
   $('#convertform').show();
 }
+$('.amntinput').change(function(){
+   this.value = parseFloat(this.value).toFixed(2);
+});

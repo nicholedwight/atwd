@@ -51,7 +51,7 @@ if (isset($_GET['from'])) {
     </div>
     <div class="CurrencyRate" id="currate">
       <label for="rate" class="heading">Currency Rate ($ = 1)</label>
-      <input name="rate" type="text" class="input__text input__text-sm" value="" placeholder="Rate">
+      <input name="rate" type="text" class="input__text input__text-sm amntinput" value="" placeholder="Rate">
     </div>
     <div class="Submit section">
       <input type="submit" class="Submit__btn" value="Submit">
@@ -70,7 +70,7 @@ if (isset($_GET['from'])) {
     </div>
     <div class="CurrencyRate" id="currate">
       <label for="rate" class="heading">Currency Rate ($ = 1)</label>
-      <input name="rate" type="text" class="input__text input__text-sm" value="" placeholder="Rate">
+      <input name="rate" type="text" class="input__text input__text-sm amntinput" value="" placeholder="Rate">
     </div>
     <div class="Countries section" id="countries">
       <label for="locations" class="heading">Countries (comma seperated if 1+)</label>
@@ -95,7 +95,7 @@ if (isset($_GET['from'])) {
   <form action="" id="convertform">
     <div class="Rate section" id="amnt">
       <label for="amnt" class="heading">Amount</label>
-      <input name="amnt" type="text" class="input__text input__text-md" value="" placeholder="Amount">
+      <input name="amnt" type="text" class="input__text input__text-md amntinput" value="" placeholder="Amount">
     </div>
     <div class="From section" id="from">
       <label for="from" class="heading">From</label>
