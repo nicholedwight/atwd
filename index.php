@@ -73,7 +73,11 @@ if (isset($_GET['from'])) {
   <form action="currPost.php" id="postform">
     <div class="CurrencyCode section" id="curcode">
       <label for="curcode" class="heading">Currency Code</label>
-      <input name="curcode" type="text" class="input__text input__text-sm" value="" placeholder="Code">
+      <select name="curcode" class="input__text input__text-lg">
+        <?php foreach($ccodes as $codeName) : ?>
+          <option id=""><?php echo $codeName;?> </option>
+        <?php  endforeach; ?>
+      </select>
     </div>
     <div class="CurrencyRate" id="currate">
       <label for="currate" class="heading">Currency Rate ($ = 1)</label>
@@ -87,20 +91,20 @@ if (isset($_GET['from'])) {
   <!-- Form for creating a new currency -->
   <form action="currPut.php" id="putform">
     <div class="CurrencyCode section" id="curcode">
-      <label for="curcode" class="heading">Currency Code</label>
-      <input name="curcode" type="text" class="input__text input__text-sm" value="" placeholder="Code">
+      <label for="code" class="heading">Currency Code</label>
+      <input name="code" type="text" class="input__text input__text-sm" value="" placeholder="Code">
     </div>
     <div class="CurrencyName section" id="curname">
-      <label for="curname" class="heading">Currency Name</label>
-      <input name="curname" type="text" class="input__text input__text-md" value="" placeholder="Name">
+      <label for="name" class="heading">Currency Name</label>
+      <input name="name" type="text" class="input__text input__text-md" value="" placeholder="Name">
     </div>
     <div class="CurrencyRate" id="currate">
-      <label for="currate" class="heading">Currency Rate ($ = 1)</label>
-      <input name="currate" type="text" class="input__text input__text-sm" value="" placeholder="Rate">
+      <label for="rate" class="heading">Currency Rate ($ = 1)</label>
+      <input name="rate" type="text" class="input__text input__text-sm" value="" placeholder="Rate">
     </div>
     <div class="Countries section" id="countries">
-      <label for="countries" class="heading">Countries (comma seperated if 1+)</label>
-      <input name="countries" type="text" class="input__text input__text-lg" value="" placeholder="Countries">
+      <label for="locations" class="heading">Countries (comma seperated if 1+)</label>
+      <input name="locations" type="text" class="input__text input__text-lg" value="" placeholder="Countries">
     </div>
     <div class="Submit section">
       <input type="submit" class="Submit__btn" value="Submit">
