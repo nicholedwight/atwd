@@ -32,7 +32,6 @@ $(document).ready(function(){
             data: $('#putform').serialize(), //target your form's data and serialize for a POST
             success: function(response, success, xmlData) {
                 // locate the div with #result and fill it with returned data from process.php
-                // console.log(xmlData.responseXML);
                 console.log(response);
                 xmlData = xmlData.responseText.split('><').join("> \n<");
                 $('#putresult').text(xmlData);
@@ -65,25 +64,60 @@ $(document).ready(function(){
         });
     });
 
+    // formatXml function found from https://gist.github.com/sente/1083506
+    // Copyright info found in credits.js
+    function formatXml(xml) {
+      var formatted = '';
+      var reg = /(>)(<)(\/*)/g;
+      xml = xml.replace(reg, '$1\r\n$2$3');
+      var pad = 0;
+      jQuery.each(xml.split('\r\n'), function(index, node) {
+          var indent = 0;
+          if (node.match( /.+<\/\w[^>]*>$/ )) {
+              indent = 0;
+          } else if (node.match( /^<\/\w/ )) {
+              if (pad != 0) {
+                  pad -= 1;
+              }
+          } else if (node.match( /^<\w[^>]*[^\/]>.*$/ )) {
+              indent = 1;
+          } else {
+              indent = 0;
+          }
+
+          var padding = '';
+          for (var i = 0; i < pad; i++) {
+              padding += '  ';
+          }
+
+          formatted += padding + node + '\r\n';
+          pad += indent;
+      });
+
+      return formatted;
+    }
+
     $('#convertform').on('submit', function(e){
       //prevent form from submitting and leaving page
       e.preventDefault();
       // console.log($('#format').val('xml'));
       if ($( "#format option:selected" ).text() == 'xml') {
         $.ajax({
-              type: "GET",
-              url: "convert.php",
-              datatype: "xml",
-              contentType: "text/xml; charset=\"utf-8\"",
-              data: $('#convertform').serialize(), //target your form's data and serialize for a POST
-              success: function(response, success, xmlData) {
-                  // locate the div with #result and fill it with returned data from process.php
-                  xmlData = xmlData.responseText.split('><').join("> \n<");
-                  $('#convertresult').text(xmlData);
-              },
-              error: function() {
-                alert("An error occurred while processing XML file.");
-              }
+            type: "GET",
+            url: "convert.php",
+            datatype: "xml",
+            contentType: "text/xml; charset=\"utf-8\"",
+            data: $('#convertform').serialize(), //target your form's data and serialize for a POST
+            success: function(response, success, xmlData) {
+                // locate the div with #result and fill it with returned data
+                xml_formatted = formatXml(xmlData.responseText);
+                xml_escaped = xml_formatted.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/ /g, '&nbsp;').replace(/\n/g,'<br />');
+                $('#convertresult').text(xml_formatted);
+
+            },
+            error: function() {
+              alert("An error occurred while processing XML file.");
+            }
           });
       } else {
 
