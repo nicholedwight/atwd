@@ -72,10 +72,16 @@ html {
 /* ***** Response Message Styles ***** */
 .ResponseMessage {
     border: 1px solid #666;
-    height: 80px;
+    min-height: 80px;
     margin-top: 15px;
     padding: .5em;
 }
 .ResponseMessage__text {
     margin: 0;
+    width: 300px;
 }
+
+/*pre {
+  width: 300px;
+  white-space: pre-line;
+}*/

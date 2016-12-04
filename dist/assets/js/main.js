@@ -1,3 +1,95 @@
+$(document).ready(function(){
+    //listen for form submission
+    $('#postform').on('submit', function(e){
+      //prevent form from submitting and leaving page
+      e.preventDefault();
+      $.ajax({
+            type: "GET",
+            url: "currPost.php",
+            datatype: "xml",
+            contentType: "text/xml; charset=\"utf-8\"",
+            data: $('#postform').serialize(), //target your form's data and serialize for a POST
+            success: function(response, success, xmlData) {
+                // locate the div with #result and fill it with returned data from process.php
+                // console.log(xmlData.responseXML);
+                xmlData = xmlData.responseText.split('><').join("> \n<");
+                $('#postresult').text(xmlData);
+            },
+            error: function() {
+              alert("An error occurred while processing XML file.");
+            }
+        });
+    });
+
+    $('#putform').on('submit', function(e){
+      //prevent form from submitting and leaving page
+      e.preventDefault();
+      $.ajax({
+            type: "GET",
+            url: "currPut.php",
+            datatype: "xml",
+            contentType: "text/xml; charset=\"utf-8\"",
+            data: $('#putform').serialize(), //target your form's data and serialize for a POST
+            success: function(response, success, xmlData) {
+                // locate the div with #result and fill it with returned data from process.php
+                // console.log(xmlData.responseXML);
+                console.log(response);
+                xmlData = xmlData.responseText.split('><').join("> \n<");
+                $('#putresult').text(xmlData);
+            },
+            error: function() {
+              alert("An error occurred while processing XML file.");
+            }
+        });
+    });
+
+    $('#deleteform').on('submit', function(e){
+      //prevent form from submitting and leaving page
+      e.preventDefault();
+      $.ajax({
+            type: "GET",
+            url: "currDel.php",
+            datatype: "xml",
+            contentType: "text/xml; charset=\"utf-8\"",
+            data: $('#deleteform').serialize(), //target your form's data and serialize for a POST
+            success: function(response, success, xmlData) {
+                // locate the div with #result and fill it with returned data from process.php
+                // console.log(xmlData.responseXML);
+                // console.log(response);
+                xmlData = xmlData.responseText.split('><').join("> \n<");
+                $('#deleteresult').text(xmlData);
+            },
+            error: function() {
+              alert("An error occurred while processing XML file.");
+            }
+        });
+    });
+
+    $('#convertform').on('submit', function(e){
+      //prevent form from submitting and leaving page
+      e.preventDefault();
+      $.ajax({
+            type: "GET",
+            url: "convert.php",
+            datatype: "xml",
+            contentType: "text/xml; charset=\"utf-8\"",
+            data: $('#convertform').serialize(), //target your form's data and serialize for a POST
+            success: function(response, success, xmlData) {
+                // locate the div with #result and fill it with returned data from process.php
+                // console.log(xmlData.responseXML);
+                console.log(response);
+                xmlData = xmlData.responseText.split('><').join("> \n<");
+                $('#convertresult').text(xmlData);
+            },
+            error: function() {
+              alert("An error occurred while processing XML file.");
+            }
+        });
+    });
+
+});
+
+
 $('#post').click(function() {
   $('#postform').show();
   $('#putform').hide();
