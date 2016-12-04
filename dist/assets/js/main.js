@@ -68,23 +68,43 @@ $(document).ready(function(){
     $('#convertform').on('submit', function(e){
       //prevent form from submitting and leaving page
       e.preventDefault();
-      $.ajax({
-            type: "GET",
-            url: "convert.php",
-            datatype: "xml",
-            contentType: "text/xml; charset=\"utf-8\"",
-            data: $('#convertform').serialize(), //target your form's data and serialize for a POST
-            success: function(response, success, xmlData) {
-                // locate the div with #result and fill it with returned data from process.php
-                // console.log(xmlData.responseXML);
-                console.log(response);
-                xmlData = xmlData.responseText.split('><').join("> \n<");
-                $('#convertresult').text(xmlData);
-            },
-            error: function() {
-              alert("An error occurred while processing XML file.");
-            }
-        });
+      // console.log($('#format').val('xml'));
+      if ($( "#format option:selected" ).text() == 'xml') {
+        $.ajax({
+              type: "GET",
+              url: "convert.php",
+              datatype: "xml",
+              contentType: "text/xml; charset=\"utf-8\"",
+              data: $('#convertform').serialize(), //target your form's data and serialize for a POST
+              success: function(response, success, xmlData) {
+                  // locate the div with #result and fill it with returned data from process.php
+                  xmlData = xmlData.responseText.split('><').join("> \n<");
+                  $('#convertresult').text(xmlData);
+              },
+              error: function() {
+                alert("An error occurred while processing XML file.");
+              }
+          });
+      } else {
+
+        $.ajax({
+              type: "GET",
+              url: "convert.php",
+              datatype: "json",
+              data: { amnt: $( "#convamnt" ).val(),
+                      from : $( "#fromcode option:selected" ).text(),
+                      to: $( "#tocode option:selected" ).text(),
+                      format: "json"},
+              contentType: 'application/json; charset=utf-8',
+              success: function(data) {
+                  $('#convertresult').text(JSON.stringify(data, null, ' '));
+              },
+              error: function() {
+                alert("An error occurred while processing JSON file.");
+              }
+          });
+      }
+
     });
 
 });

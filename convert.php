@@ -2,6 +2,7 @@
 require('config.php');
 
 $at = time();
+$format = $_GET['format'];
 $countries = simplexml_load_file(COUNTRIES);
 $currencies = simplexml_load_file(RATES);
 
@@ -71,7 +72,7 @@ $rate = (($_GET['amnt']/(float)$fromRate)*(float)$toRate);
         ),
       ));
 		header('Content-Type: application/json');
-		return json_encode($json, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+		echo json_encode($json, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 	} else {
 
   // If node already exists within currencies.xml, display error

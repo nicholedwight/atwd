@@ -114,29 +114,29 @@ require('config.php');
   <form action="convert.php" id="convertform">
     <div class="Rate section" id="amnt">
       <label for="amnt" class="heading">Amount</label>
-      <input name="amnt" type="text" class="input__text input__text-md amntinput" value="" placeholder="Amount">
+      <input id="convamnt" name="amnt" type="text" class="input__text input__text-md amntinput" value="" placeholder="Amount">
     </div>
     <div class="From section" id="from">
       <label for="from" class="heading">From</label>
-      <select name="from" class="input__text input__text-lg">
+      <select id="fromcode" name="from" class="input__text input__text-lg">
         <?php foreach($ccodes as $codeName) : ?>
-          <option id=""><?php echo $codeName;?> </option>
+          <option id=""><?php echo $codeName;?></option>
         <?php  endforeach; ?>
       </select>
     </div>
     <div class="To section" id="to">
       <label for="to" class="heading">To</label>
-      <select name="to" class="input__text input__text-lg">
+      <select id="tocode" name="to" class="input__text input__text-lg">
         <?php foreach($ccodes as $codeName) : ?>
-          <option id=""><?php echo $codeName;?> </option>
+          <option id=""><?php echo $codeName;?></option>
         <?php  endforeach; ?>
       </select>
     </div>
     <div class="Format section" id="format">
       <label for="format" class="heading">Format</label>
-      <select name="format" class="input__text input__text-lg">
-          <option id="xml">xml</option>
-          <option id="json">json</option>
+      <select id="format" name="format" class="input__text input__text-lg">
+          <option id="xml" value="xml">xml</option>
+          <option id="json" value="json">json</option>
       </select>
     </div>
     <div class="Submit section">
