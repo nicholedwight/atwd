@@ -1,16 +1,11 @@
 <?php
 
 require('config.php');
-// require('api/errors.php');
-// getCurrencies();
-// getCountries();
 include('convert.php');
+
+// If the conversion form has been submitted, call convert function and display result in response field
 if (isset($_GET['from'])) {
   $result = convert($_GET['from'], $_GET['to'], $_GET['amnt'], $_GET['format']);
-
-  // header("Content-type: text/xml");
-  // echo $xml->asXML();
-  // echo $result;
 }
 ?>
 <!DOCTYPE html>
@@ -22,32 +17,7 @@ if (isset($_GET['from'])) {
   <link rel="stylesheet" href="dist/assets/css/main.css">
 </head>
 <body>
-  <!-- <form action="" method="GET">
-    <input type='text' name="amnt" value="" />
-    <select name="from">
-      <?php foreach($ccodes as $codeName) : ?>
-        <option id=""><?php echo $codeName;?> </option>
-      <?php  endforeach; ?>
-    </select>
-    to
-    <select name="to">
-      <?php foreach($ccodes as $codeName) : ?>
-        <option id=""><?php echo $codeName;?> </option>
-      <?php endforeach; ?>
-    </select>
-    <select name="format">
-      <option value="xml">XML</option>
-      <option value="json">JSON</option>
-    </select>
-    <button type="submit">Submit</button>
-    <?php if (isset($_GET['from'])) { ?>
-    <div class="ResponseMessage section" id="submitMessage">
-      <p class="ResponseMessage__text">
-        <?php echo $result; ?></p>
-    </div>
-    <?php } ?>
-  </form> -->
-    <div class="InterfaceTitle">
+  <div class="InterfaceTitle">
     <h1 class="heading--primary">Currency API Interface</h1>
   </div>
   <div class="InterfaceAction section">
@@ -154,14 +124,11 @@ if (isset($_GET['from'])) {
       <input type="submit" class="Submit__btn" value="Submit">
     </div>
     <?php if (isset($_GET['from'])) { ?>
-    <div class="ResponseMessage section" id="submitMessage">
-      <p class="ResponseMessage__text"><?php echo $result; ?></p>
-    </div>
+      <div class="ResponseMessage section" id="submitMessage">
+        <p class="ResponseMessage__text"><?php echo $result; ?></p>
+      </div>
     <?php } ?>
   </form>
-
-
-</form>
 
 <script src="dist/assets/js/jquery.js"></script>
 <script src="dist/assets/js/main.js"></script>
