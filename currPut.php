@@ -8,8 +8,8 @@ $locations = $_GET['locations'];
 $at = time();
 
 
-$existingXML = simplexml_load_file("data/currencies.xml");
-if ($existingXML->xpath("/rates/rate[@code='" . $code . "']")) {
+$currencyXML = simplexml_load_file("data/currencies.xml");
+if ($currencyXML->xpath("/rates/rate[@code='" . $code . "']")) {
   // If node already exists within currencies.xml, display error
   header('Content-Type: text/xml');
   $xml = new SimpleXMLElement('<method type="put" />');
@@ -21,7 +21,7 @@ if ($existingXML->xpath("/rates/rate[@code='" . $code . "']")) {
   // Displaying new currency in the browser
   header('Content-Type: text/xml');
   $xml = new SimpleXMLElement('<method type="put" />');
-  $xml->addChild('at', date("F j Y G:i", (int)$at));
+  $xml->addChild('at', date("d F Y G:i", (int)$at));
   $xml->addChild('rate', $rate);
   $currency = $xml->addChild('curr');
   $currency->addChild('code', $code);
@@ -30,11 +30,11 @@ if ($existingXML->xpath("/rates/rate[@code='" . $code . "']")) {
   echo $xml->asXML();
 
   // Saving new currency to existing currencies.xml
-  $node = $existingXML->addChild('rate');
+  $node = $currencyXML->addChild('rate');
   $node->addAttribute('code', $code);
   $node->addAttribute('value', $rate);
   $node->addAttribute('ts', $at);
-  $existingXML->asXML("data/currencies.xml");
+  $currencyXML->asXML("data/currencies.xml");
 }
 
 $countryXML = simplexml_load_file("data/countries.xml");

@@ -114,8 +114,8 @@ if (isset($_GET['from'])) {
   <!-- Form for deleting an existing currency -->
   <form action="currDel.php" id="deleteform">
     <div class="CurrencyCode section" id="curcode">
-      <label for="curcode" class="heading">Currency Code</label>
-      <input name="curcode" type="text" class="input__text input__text-sm" value="" placeholder="Code">
+      <label for="code" class="heading">Currency Code</label>
+      <input name="code" type="text" class="input__text input__text-sm" value="" placeholder="Code">
     </div>
     <div class="Submit section">
       <input type="submit" class="Submit__btn" value="Submit">

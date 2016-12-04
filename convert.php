@@ -24,7 +24,7 @@ function convert($from, $to, $amnt, $format) {
 	if ($format=='json') {
 		$json = array(
       'conv' => array(
-        "at" => date("F j Y G:i", (int)$at),
+        "at" => date("d F Y G:i", (int)$at),
         "rate" => $rate,
         'from' => array(
           "code" => $_GET['from'],
@@ -69,7 +69,7 @@ function convert($from, $to, $amnt, $format) {
     // Creating the XML to be displayed on conversion
     $xml =  '<?xml version="1.0" encoding="UTF-8"?>';
     $xml .= '<conv>';
-    $xml .= '<at>' . date("F j Y G:i", (int)$at) . '</at>';
+    $xml .= '<at>' . date("d F Y G:i", (int)$at) . '</at>';
     $xml .= '<rate>' . $rate . '</rate>';
     $xml .= '<from>';
     $xml .= '<code>' . $_GET['from'] . '</code>';
@@ -84,7 +84,7 @@ function convert($from, $to, $amnt, $format) {
     $xml .= '<amnt>' . $toRate . '</amnt>';
     $xml .= '</to>';
     $xml .= '</conv>';
-    
+
     return htmlentities($xml);
   }
 }
