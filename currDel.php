@@ -5,8 +5,11 @@ $code = $_GET['code'];
 $at = time();
 
 
-$currencyXML = simplexml_load_file("data/currencies.xml");
-if ($currencyXML->xpath("/rates/rate[@code='" . $code . "']")) {
+$currencyXML = simplexml_load_file(RATES);
+$countryXML = simplexml_load_file(COUNTRIES);
+
+if ($currencyXML->xpath("/rates/rate[@code='" . $code . "']") &&
+$countryXML->xpath("/currencies/currency/ccode[text()='" . $code . "']")) {
   // If node exists within currencies.xml
   header('Content-Type: text/xml');
   $xml = new SimpleXMLElement('<method type="delete" />');
@@ -14,14 +17,27 @@ if ($currencyXML->xpath("/rates/rate[@code='" . $code . "']")) {
   $xml->addChild('code', $code);
   echo $xml->asXML();
 
-
+  // Looping through nodes to find nodes with code equal to code parameter provided
   foreach($currencyXML->xpath("/rates/rate[@code='" . $code . "']") as $found){
-			//We make that node into a DOM object
+			// We make that node into a DOM object
 			$dom = dom_import_simplexml($found);
-			//Then we delete that node
+			// Then we delete that node
 			$dom->parentNode->removeChild($dom);
 	}
-  $currencyXML->asXml("data/currencies.xml");
+  // Updating currencies.xml to remove requested node
+  $currencyXML->asXml(RATES);
+
+  // Looping through nodes to find nodes with code equal to code parameter provided
+  foreach($countryXML->xpath("/currencies/currency/ccode[text()='" . $code . "']") as $found){
+			// We make that node into a DOM object
+			$dom = dom_import_simplexml($found);
+			// Then we delete that node
+			$parent = $dom->parentNode;
+      $grandParent = $parent->parentNode;
+      $grandParent->removeChild($parent);
+	}
+  $countryXML->asXml(COUNTRIES);
+
 
 
 } else {
@@ -31,30 +47,6 @@ if ($currencyXML->xpath("/rates/rate[@code='" . $code . "']")) {
   $error = $xml->addChild('error');
   $error->addChild('msg', 'Currency does not exist');
   echo $xml->asXML();
-
-  // Saving new currency to existing currencies.xml
-  // $node = $existingXML->addChild('rate');
-  // $node->addAttribute('code', $code);
-  // $node->addAttribute('value', $rate);
-  // $node->addAttribute('ts', $at);
-  // $existingXML->asXML("data/currencies.xml");
 }
 
-$countryXML = simplexml_load_file("data/countries.xml");
-if ($countryXML->xpath("/currencies/currency/ccode[text='" . $code . "']")) {
-  // If node already exists within currencies.xml, display error
-  header('Content-Type: text/xml');
-  $xml = new SimpleXMLElement('<method type="put" />');
-  $error = $xml->addChild('error');
-  $error->addChild('msg', 'Country already exists');
-  echo $xml->asXML();
-
-} else {
-  // Saving new currency to existing currencies.xml
-  // $node = $countryXML->addChild('currency');
-  // $node->addChild('ccode', $code);
-  // $node->addChild('cname', $name);
-  // $node->addChild('cntry', $locations);
-  // $countryXML->asXML("data/countries.xml");
-}
 ?>
