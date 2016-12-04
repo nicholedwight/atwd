@@ -46,20 +46,4 @@ if ($currencyXML->xpath("/rates/rate[@code='" . $code . "']") && $countryXML->xp
   $countryXML->asXML("data/countries.xml");
 }
 
-// if ($countryXML->xpath("/currencies/currency/ccode[text='" . $code . "']")) {
-  // If node already exists within currencies.xml, display error
-  // header('Content-Type: text/xml');
-  // $xml = new SimpleXMLElement('<method type="put" />');
-  // $error = $xml->addChild('error');
-  // $error->addChild('msg', 'Currency already exists');
-  // echo $xml->asXML();
-// 
-// } else {
-//   // Saving new currency to existing currencies.xml
-//   $node = $countryXML->addChild('currency');
-//   $node->addChild('ccode', $code);
-//   $node->addChild('cname', $name);
-//   $node->addChild('cntry', $locations);
-//   $countryXML->asXML("data/countries.xml");
-// }
 ?>

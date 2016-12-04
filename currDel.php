@@ -14,23 +14,15 @@ if ($currencyXML->xpath("/rates/rate[@code='" . $code . "']")) {
   $xml->addChild('code', $code);
   echo $xml->asXML();
 
-  $nodetoremove = $currencyXML->xpath("/rates/rate[@code='NIC']");
-  // var_dump($nodetoremove);
-  // $xmldoc = new DOMDocument($currencyXML);
-  // $xmldoc->load('data/currencies.xml');
-  // foreach($dom_node_list as $n) {
-  //   // $temp_dom->appendChild($temp_dom->importNode($n,true));
-  //   echo "butts";
-  // }
-  // print_r($temp_dom->saveHTML());
-  // foreach($nodestoremove as $nodetoremove){
-    // This is a hint from the manual comments
-    // $nodetoremove->parentNode->removeChild($nodetoremove);
-    // echo "butts";
-    // echo $nodetoremove;
-  // }
-  // unset();
-  // $currencyXML->asXML("data/currencies.xml");
+
+  foreach($currencyXML->xpath("/rates/rate[@code='" . $code . "']") as $found){
+			//We make that node into a DOM object
+			$dom = dom_import_simplexml($found);
+			//Then we delete that node
+			$dom->parentNode->removeChild($dom);
+	}
+  $currencyXML->asXml("data/currencies.xml");
+
 
 } else {
   // If currency is not an existing node (already deleted)
