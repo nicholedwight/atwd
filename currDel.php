@@ -4,7 +4,6 @@ require('config.php');
 $code = $_GET['code'];
 $at = time();
 
-
 $currencyXML = simplexml_load_file(RATES);
 $countryXML = simplexml_load_file(COUNTRIES);
 

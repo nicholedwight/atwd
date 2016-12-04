@@ -72,16 +72,16 @@ if (isset($_GET['from'])) {
   <!--Form for updating-->
   <form action="currPost.php" id="postform">
     <div class="CurrencyCode section" id="curcode">
-      <label for="curcode" class="heading">Currency Code</label>
-      <select name="curcode" class="input__text input__text-lg">
+      <label for="code" class="heading">Currency Code</label>
+      <select name="code" class="input__text input__text-lg">
         <?php foreach($ccodes as $codeName) : ?>
           <option id=""><?php echo $codeName;?> </option>
         <?php  endforeach; ?>
       </select>
     </div>
     <div class="CurrencyRate" id="currate">
-      <label for="currate" class="heading">Currency Rate ($ = 1)</label>
-      <input name="currate" type="text" class="input__text input__text-sm" value="" placeholder="Rate">
+      <label for="rate" class="heading">Currency Rate ($ = 1)</label>
+      <input name="rate" type="text" class="input__text input__text-sm" value="" placeholder="Rate">
     </div>
     <div class="Submit section">
       <input type="submit" class="Submit__btn" value="Submit">

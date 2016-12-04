@@ -11,7 +11,7 @@ $at = time();
 $currencyXML = simplexml_load_file(RATES);
 $countryXML = simplexml_load_file(COUNTRIES);
 
-if ($currencyXML->xpath("/rates/rate[@code='" . $code . "']") && $countryXML->xpath("/currencies/currency/ccode[text='" . $code . "']")) {
+if ($currencyXML->xpath("/rates/rate[@code='" . $code . "']") && $countryXML->xpath("/currencies/currency/ccode[text()='" . $code . "']")) {
   // If node already exists within currencies.xml, display error
   header('Content-Type: text/xml');
   $xml = new SimpleXMLElement('<method type="put" />');

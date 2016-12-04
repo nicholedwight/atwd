@@ -1,47 +1,61 @@
 <?php
-require('api/currencies.php');
-getCurrencyCodes();
+require('config.php');
 
-function update($code) {
-  global $result;
+$rate = $_GET['rate'];
+$code = $_GET['code'];
+$at = time();
 
-  $API_KEY = "18947b8fdda74706b676b4ab92faa09d";
-  $exchange_rate_url = 'https://openexchangerates.org/api/latest.json?app_id=';
-  $currency = '&symbols=' . $code;
-  // $request = file_get_contents($exchange_rate_url  . $API_KEY . $currency);
 
-  echo $exchange_rate_url  . $API_KEY . $currency;
-  // $responseArray = json_decode($request, true);
-  //
-  // $countries = array();
-  //
-  // for ($i = 0; $i < count($responseArray); $i++ ) {
-  //     array_push($countries, $responseArray[$i]["name"]);
-  // }
-  //
-  // $result = $countries;
-  //
-  // return $result;
+$currencyXML = simplexml_load_file(RATES);
+$countryXML = simplexml_load_file(COUNTRIES);
+
+$previousRate = $currencyXML->xpath("/rates/rate[@code='" . $code . "']/@value");
+foreach ($previousRate as $key => $value) {
+  $previousRate = $value;
+}
+$name = $countryXML->xpath("/currencies/currency/ccode[text()='" . $code . "']/following-sibling::cname");
+foreach ($name as $key => $value) {
+  $name = $value;
+}
+$locs = $countryXML->xpath("/currencies/currency/ccode[text()='" . $code . "']/following-sibling::cntry");
+foreach ($locs as $key => $value) {
+  $locs = $value;
 }
 
-if(isset($_GET['code'])) {
-    update($_GET['code']);
-} else {
-//show form
-?>
-<!DOCTYPE html>
-<html>
-<body>
-  <h1>Update Currency</h1>
-  <form action="" method="GET">
-    <select name="code">
-      <?php foreach($codesArray as $codeName) : ?>
-        <option id=""><?php echo $codeName;?> </option>
-      <?php endforeach; ?>
-    </select>
-    <button type="submit" name="submit">Submit</button>
-  </form>
-</body>
-</html>
+if ($currencyXML->xpath("/rates/rate[@code='" . $code . "']") && $countryXML->xpath("/currencies/currency/ccode[text()='" . $code . "']")) {
 
-<?php } ?>
+  // If node already exists within currencies.xml, display error
+  header('Content-Type: text/xml');
+  $xml = new SimpleXMLElement('<method type="post" />');
+  $xml->addChild('at', date("d F Y G:i", (int)$at));
+  $previous = $xml->addChild('previous');
+  $previous->addChild('rate', $previousRate);
+  $curr = $previous->addChild('curr');
+  $curr->addChild('code', $code);
+  $curr->addChild('name', $name);
+  $curr->addChild('loc', $locs);
+  $new = $xml->addChild('new');
+  $new->addChild('rate', $rate);
+  $curr = $new->addChild('curr');
+  $curr->addChild('code', $code);
+  $curr->addChild('name', $name);
+  $curr->addChild('loc', $locs);
+  echo $xml->asXML();
+
+  foreach($currencyXML->xpath("/rates/rate[@code='" . $code . "']/@value") as $node) {
+    $node->value = $rate;
+	}
+  foreach($currencyXML->xpath("/rates/rate[@code='" . $code . "']/@ts") as $node) {
+    $node->ts = $at;
+	}
+  $currencyXML->asXML(RATES);
+
+} else {
+  header('Content-Type: text/xml');
+  $xml = new SimpleXMLElement('<method type="post" />');
+  $error = $xml->addChild('error');
+  $error->addChild('msg', 'Currency does not exist');
+  echo $xml->asXML();
+}
+
+?>
