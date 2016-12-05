@@ -6,7 +6,7 @@ function generate_error($eno, $error_hash, $format='xml') {
 	$msg = $error_hash[$eno];
 
 	if ($format=='json') {
-		$json = array('conv' => array("code" => "$eno", "msg" => "$msg"));
+		$json = array('error' => array('conv' => array("code" => "$eno", "msg" => "$msg")));
 		header('Content-Type: application/json');
 		return json_encode($json, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 	}

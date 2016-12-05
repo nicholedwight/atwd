@@ -1,7 +1,14 @@
 <?php
 
-include('config.php');
-include('convert.php');
+// include('../config.php');
+include('../convert.php');
+$ccodes = array(
+   'CAD','CHF','CNY','DKK',
+   'EUR','GBP','HKD','HUF',
+   'INR','JPY','MXN','MYR',
+   'NOK','NZD','PHP','RUB',
+   'SEK','SGD','THB','TRY',
+   'USD','ZAR');
 
 if (!isset($_GET['from'])) { ?>
   <!DOCTYPE html>
@@ -10,7 +17,7 @@ if (!isset($_GET['from'])) { ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Currency API</title>
-    <link rel="stylesheet" href="http://www.cems.uwe.ac.uk/~a2-dwight/atwd1/assignment/dist/assets/css/main.css">
+    <link rel="stylesheet" href="./dist/assets/css/main.css">
   </head>
   <body>
     <div class="InterfaceTitle">
@@ -32,12 +39,12 @@ if (!isset($_GET['from'])) { ?>
       </div>
     </div>
     <!--Form for updating-->
-    <form action="currPost.php" id="postform" method="post">
+    <form action="../currPost.php" id="postform" method="post">
       <div class="CurrencyCode section" id="curcode">
         <label for="code" class="heading">Currency Code</label>
         <select name="code" class="input__text input__text-lg">
           <?php foreach($ccodes as $codeName) : ?>
-            <option id=""><?php echo $codeName;?> </option>
+            <option id=""><?php echo $codeName;?></option>
           <?php  endforeach; ?>
         </select>
       </div>
@@ -103,8 +110,8 @@ if (!isset($_GET['from'])) { ?>
       </div>
     </form>
 
-  <script src="http://www.cems.uwe.ac.uk/~a2-dwight/atwd1/assignment/dist/assets/js/jquery.js"></script>
-  <script src="http://www.cems.uwe.ac.uk/~a2-dwight/atwd1/assignment/dist/assets/js/main.js"></script>
+  <script src="./dist/assets/js/jquery.js"></script>
+  <script src="./dist/assets/js/main.js"></script>
   </body>
   </html>
 <?php } ?>

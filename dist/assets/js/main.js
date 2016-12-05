@@ -97,83 +97,27 @@ $(document).ready(function(){
       return formatted;
     }
 
-    $('#convertform').on('submit', function(e){
-      //prevent form from submitting and leaving page
-      e.preventDefault();
-      // console.log($('#format').val('xml'));
-      if ($( "#format option:selected" ).text() == 'xml') {
-        $.ajax({
-            type: "GET",
-            url: "convert.php",
-            datatype: "xml",
-            contentType: "text/xml; charset=\"utf-8\"",
-            data: $('#convertform').serialize(), //target your form's data and serialize for a POST
-            success: function(response, success, xmlData) {
-                // locate the div with #result and fill it with returned data
-                xml_formatted = formatXml(xmlData.responseText);
-                xml_escaped = xml_formatted.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/ /g, '&nbsp;').replace(/\n/g,'<br />');
-                $('#convertresult').text(xml_formatted);
-
-            },
-            error: function() {
-              alert("An error occurred while processing XML file.");
-            }
-          });
-      } else {
-
-        $.ajax({
-              type: "GET",
-              url: "convert.php",
-              datatype: "json",
-              data: { amnt: $( "#convamnt" ).val(),
-                      from : $( "#fromcode option:selected" ).text(),
-                      to: $( "#tocode option:selected" ).text(),
-                      format: "json"},
-              contentType: 'application/json; charset=utf-8',
-              success: function(data) {
-                  $('#convertresult').text(JSON.stringify(data, null, ' '));
-              },
-              error: function() {
-                alert("An error occurred while processing JSON file.");
-              }
-          });
-      }
-
-    });
-
 });
 
 
+// Hiding and showing forms based on what action is chosen
 $('#post').click(function() {
   $('#postform').show();
   $('#putform').hide();
   $('#deleteform').hide();
-  $('#convertform').hide();
 });
 $('#put').click(function() {
   $('#postform').hide();
   $('#putform').show();
   $('#deleteform').hide();
-  $('#convertform').hide();
 });
 $('#delete').click(function() {
   $('#postform').hide();
   $('#putform').hide();
   $('#deleteform').show();
-  $('#convertform').hide();
 });
-$('#convert').click(function() {
-  $('#postform').hide();
+if ($('#post').is(':checked')) {
+  $('#postform').show();
   $('#putform').hide();
   $('#deleteform').hide();
-  $('#convertform').show();
-});
-if ($('#convert').is(':checked')) {
-  $('#postform').hide();
-  $('#putform').hide();
-  $('#deleteform').hide();
-  $('#convertform').show();
 }
-$('.amntinput').change(function(){
-   this.value = parseFloat(this.value).toFixed(2);
-});

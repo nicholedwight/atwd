@@ -1,8 +1,8 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-ini_set('precision', 3);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// ini_set('precision', 3);
+// error_reporting(E_ALL);
 #############################################################
 # file: 	config.php                                        #
 # author:	p.chatterjee@uwe.ac.uk                            #
@@ -31,14 +31,13 @@ $ccodes = array(
    'USD','ZAR');
 
 # url params
-$params = array('from', 'to', 'amnt', 'format');
+$params = array('from', 'to', 'amnt', 'format', 'code', 'name', 'rate', 'locations');
 $frmts = array('xml', 'json');
 $frmaction = array('post', 'put', 'delete');
 $frmpost = array('code', 'rate');
-$frmput = array('code', 'name', 'rate', 'countries');
+$frmput = array('code', 'name', 'rate', 'locations');
 $frmdelete = array('code');
 
-$update_interval = 43200;
 
 # error_hash to hold error numbers and messages
 $error_hash = array(
@@ -55,49 +54,109 @@ $error_hash = array(
 	2500 => 'Error in service'
 );
 
-require_once('generate_error.php');
+require_once('functions.php');
 
-// if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-  # turn $_GET params into PHP variables
-  extract($_GET);
-  # set format to default to XML
-  if (!isset($format)) {
-  	$format = 'xml';
+# turn $_GET params into PHP variables
+extract($_GET);
+# set format to default to XML
+if (!isset($format)) {
+	$format = 'xml';
+}
+
+if (isset($_GET['code'])) {
+  if (strtoupper($_GET['code']) != $_GET['code']) {
+  	echo generate_error(2200,  $error_hash, $format);
+  	exit;
   }
-  $get = array_intersect($params, array_keys($_GET));
-  if (count($get) < 4 && count($get) >= 1) {
+
+  if (strlen($_GET['code']) != 3) {
+  	echo generate_error(2200,  $error_hash, $format);
+  	exit;
+  }
+}
+
+if (isset($_GET['rate'])) {
+  if (!preg_match('/^[+-]?(\d*\.\d+([eE]?[+-]?\d+)?|\d+[eE][+-]?\d+)$/', $_GET['rate'])) {
+  	echo generate_error(2100,  $error_hash, $format);
+  	exit;
+  }
+}
+
+if (isset($_GET['locations'])) {
+  // $_GET['locations'].stripspaces.splitoncomma.givesarrayofcountries.foreachtocheckifanycontainnumbers
+  // $_GET['locations'].
+  if (preg_match('/\d/', $_GET['locations'])) {
+    print_r($_GET['locations']);
+  	echo generate_error(2300, $error_hash, $format);
+  	exit;
+  }
+}
+
+if (isset($_GET['to'])) {
+  if (!isset($_GET['format'])) {
   	echo generate_error(1100, $error_hash, $format);
   	exit;
   }
-  if (count($_GET) > 4) {
-  	echo generate_error(1200, $error_hash, $format);
+}
+
+if ($_SERVER['REQUEST_METHOD'] != 'POST' && $_SERVER['REQUEST_METHOD'] != 'GET' && $_SERVER['REQUEST_METHOD'] != "DELETE") {
+  echo generate_error(2000, $error_hash, $format);
+}
+
+$get = array_intersect($params, array_keys($_GET));
+// $delete = array_intersect($frmdelete, array_keys($_GET));
+if (count($get) < 1) {
+	echo generate_error(1100, $error_hash, $format);
+	exit;
+}
+
+if (count($_GET) > 4) {
+	echo generate_error(1200, $error_hash, $format);
+	exit;
+}
+# $to and $from are not recognized currencies
+if (isset($to) || isset($from)){
+  if (!in_array($to, $ccodes) || !in_array($from, $ccodes)) {
+  	echo generate_error(1000, $error_hash, $format);
   	exit;
   }
-  # $to and $from are not recognized currencies
-  if (isset($to) || isset($from)){
-    if (!in_array($to, $ccodes) || !in_array($from, $ccodes)) {
-    	echo generate_error(1000, $error_hash, $format);
-    	exit;
-    }
-  }
-  # check for allowed format values
-  if (!in_array($format, $frmts)) {
-  	echo generate_error(1200, $error_hash, $format);
+}
+# check for allowed format values
+if (!in_array($format, $frmts)) {
+	echo generate_error(1200, $error_hash, $format);
+	exit;
+}
+# $amnt is not a decimal value
+if (isset($amnt)) {
+  if (!preg_match('/^[+-]?(\d*\.\d+([eE]?[+-]?\d+)?|\d+[eE][+-]?\d+)$/', $amnt)) {
+  	echo generate_error(1300,  $error_hash, $format);
   	exit;
   }
-  # $amnt is not a decimal value
-  if (isset($amnt)) {
-    if (!preg_match('/^[+-]?(\d*\.\d+([eE]?[+-]?\d+)?|\d+[eE][+-]?\d+)$/', $amnt)) {
-    	echo generate_error(1300,  $error_hash, $format);
-    	exit;
-    }
-  }
-// }
+}
 
 
 # now read in data files
 # update rate if more than 12 hours old
 # do conversion
+$ratesFile = simplexml_load_file(RATES);
+$update_interval = 43200;
+$newtime = time();
+$checktime = $newtime - $update_interval;
+$nodes = $ratesFile->xpath("/rates/rate/@ts");
+$toBeUpdatedArray = [];
+// Looping through each node, if timestamp is older than 12 hours,
+// add code to toBeUpdatedArray
+foreach ($nodes as $key => $value) {
+  if ($value < $checktime ){
+    $nodeToUpdate = $ratesFile->xpath("/rates/rate[@ts='" . $value . "']/@code");
+    $timestamp = $value;
+    foreach ($nodeToUpdate as $key => $value) {
+      $nodeToUpdate = $value;
+      array_push($toBeUpdatedArray, $nodeToUpdate);
+    }
+    update_rates($toBeUpdatedArray);
+  }
+}
 # echo result as XML or JSON depending on format param.
 
 # determine if local or UWE server
