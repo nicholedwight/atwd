@@ -1,6 +1,5 @@
 <?php
 
-// include('../config.php');
 include('../convert.php');
 
 // This block grabs all the current currency codes in the rates file
