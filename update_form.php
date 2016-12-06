@@ -2,13 +2,16 @@
 
 // include('../config.php');
 include('../convert.php');
-$ccodes = array(
-   'CAD','CHF','CNY','DKK',
-   'EUR','GBP','HKD','HUF',
-   'INR','JPY','MXN','MYR',
-   'NOK','NZD','PHP','RUB',
-   'SEK','SGD','THB','TRY',
-   'USD','ZAR');
+
+// This block grabs all the current currency codes in the rates file
+// It does need a refresh before it registers any codes inserted via the put form
+$ratesFile = simplexml_load_file("./data/rates.xml");
+$codes = $ratesFile->xpath("/rates/rate/@code");
+$ccodesArray = [];
+foreach ($codes as $key => $value) {
+  $code = $value;
+  array_push($ccodesArray, $code);
+}
 
 if (!isset($_GET['from'])) { ?>
   <!DOCTYPE html>
@@ -52,7 +55,7 @@ if (!isset($_GET['from'])) { ?>
         <div class="CurrencyCode section single-margin--top" id="curcode">
           <label for="code" class="heading">Currency Code</label>
           <select name="code" class="input__text input__text-lg">
-            <?php foreach($ccodes as $codeName) : ?>
+            <?php foreach($ccodesArray as $codeName) : ?>
               <option id=""><?php echo $codeName;?></option>
             <?php  endforeach; ?>
           </select>
